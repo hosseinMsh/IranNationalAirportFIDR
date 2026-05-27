@@ -223,28 +223,49 @@ class _FlightsScreenState extends State<FlightsScreen>
 
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+        Container(
+          margin: const EdgeInsets.fromLTRB(12, 10, 12, 0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: Colors.grey.shade200, width: 0.5),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(8),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
           child: TextField(
             controller: _searchController,
             decoration: InputDecoration(
               hintText: t.tr('searchHint'),
-              hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 13),
-              prefixIcon: Icon(Icons.search, color: theme.colorScheme.primary),
+              hintStyle:
+                  TextStyle(color: Colors.grey.shade400, fontSize: 12.5),
+              prefixIcon: Icon(Icons.search_rounded,
+                  color: theme.colorScheme.primary, size: 20),
               suffixIcon: _searchQuery.isNotEmpty
                   ? IconButton(
-                      icon: Icon(Icons.clear, color: Colors.grey.shade500),
+                      icon: Icon(Icons.close_rounded,
+                          color: Colors.grey.shade500, size: 18),
                       onPressed: () => _searchController.clear(),
                     )
                   : null,
+              border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16, vertical: 12),
+              filled: false,
             ),
           ),
         ),
         SizedBox(
-          height: 46,
+          height: 48,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             itemCount: _statusDefs.length,
             separatorBuilder: (_, __) => const SizedBox(width: 6),
             itemBuilder: (_, i) {
