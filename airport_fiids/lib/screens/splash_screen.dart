@@ -43,11 +43,77 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FadeTransition(
-        opacity: _fadeIn,
-        child: Center(
-          child: Text('Splash Screen'),
-        ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset(
+            'assets/images/welcome.png',
+            fit: BoxFit.cover,
+          ),
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withAlpha(100),
+                  Colors.black.withAlpha(180),
+                ],
+              ),
+            ),
+          ),
+          FadeTransition(
+            opacity: _fadeIn,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Spacer(flex: 2),
+                Image.asset(
+                  'assets/images/logo.png',
+                  width: 120,
+                  height: 120,
+                ),
+                const SizedBox(height: 24),
+                const Text(
+                  'اطلاعات پرواز',
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'فرودگاه‌های ایران',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white.withAlpha(200),
+                  ),
+                ),
+                const Spacer(flex: 2),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 60),
+                  child: ElevatedButton(
+                    onPressed: _navigateToHome,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 48,
+                        vertical: 16,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    child: const Text(
+                      'ورود به برنامه',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
