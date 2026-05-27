@@ -17,6 +17,44 @@ class AirportListScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text(t.tr('airportsTitle')),
           centerTitle: true,
+          actions: [
+            PopupMenuButton<String>(
+              icon: const Icon(Icons.language),
+              onSelected: (code) => t.setLangCode(code),
+              itemBuilder: (_) => [
+                PopupMenuItem(
+                  value: 'fa',
+                  child: Row(
+                    children: [
+                      if (t.langCode == 'fa') const Icon(Icons.check, size: 18),
+                      SizedBox(width: t.langCode == 'fa' ? 8 : 26),
+                      const Text('فارسی'),
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'ar',
+                  child: Row(
+                    children: [
+                      if (t.langCode == 'ar') const Icon(Icons.check, size: 18),
+                      SizedBox(width: t.langCode == 'ar' ? 8 : 26),
+                      const Text('العربية'),
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'en',
+                  child: Row(
+                    children: [
+                      if (t.langCode == 'en') const Icon(Icons.check, size: 18),
+                      SizedBox(width: t.langCode == 'en' ? 8 : 26),
+                      const Text('English'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
         body: ListView.builder(
           padding: const EdgeInsets.symmetric(vertical: 6),
