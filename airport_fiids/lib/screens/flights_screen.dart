@@ -252,11 +252,16 @@ class _FlightsScreenState extends State<FlightsScreen>
               final label = _statusLabel(f.key);
               final selected = _selectedStatusKeys.contains(f.key);
               return FilterChip(
-                label: Text(label, style: TextStyle(fontSize: 12, fontWeight: selected ? FontWeight.w600 : FontWeight.normal)),
+                label: Text(label,
+                    style: TextStyle(
+                        fontSize: 11.5,
+                        fontWeight:
+                            selected ? FontWeight.w700 : FontWeight.w500)),
                 selected: selected,
-                selectedColor: f.color.withAlpha(35),
+                selectedColor: f.color.withAlpha(25),
                 checkmarkColor: f.color,
-                avatar: Icon(f.icon, size: 15, color: selected ? f.color : Colors.grey.shade500),
+                avatar: Icon(f.icon,
+                    size: 14, color: selected ? f.color : Colors.grey.shade500),
                 onSelected: (val) {
                   setState(() {
                     if (val) {
@@ -267,6 +272,13 @@ class _FlightsScreenState extends State<FlightsScreen>
                   });
                 },
                 visualDensity: VisualDensity.compact,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: BorderSide(
+                    color: selected ? f.color.withAlpha(100) : Colors.grey.shade300,
+                    width: selected ? 1.2 : 0.5,
+                  ),
+                ),
               );
             },
           ),
@@ -275,8 +287,12 @@ class _FlightsScreenState extends State<FlightsScreen>
           child: TabBarView(
             controller: _tabController,
             children: [
-              _buildFlightList(_filteredFlights(_flights!['arrivals'] ?? []), _arrivalsScrollController),
-              _buildFlightList(_filteredFlights(_flights!['departures'] ?? []), _departuresScrollController),
+              _buildFlightList(
+                  _filteredFlights(_flights!['arrivals'] ?? []),
+                  _arrivalsScrollController),
+              _buildFlightList(
+                  _filteredFlights(_flights!['departures'] ?? []),
+                  _departuresScrollController),
             ],
           ),
         ),
