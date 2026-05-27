@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import '../services/ad_service.dart';
 import '../services/fids_service.dart';
 import '../services/translations.dart';
+import '../widgets/ad_banner.dart';
 import 'flights_screen.dart';
 import 'airport_map_screen.dart';
 
@@ -107,8 +109,14 @@ class _AirportListScreenState extends State<AirportListScreen>
             ),
             child: ListView.builder(
               padding: const EdgeInsets.fromLTRB(0, 8, 0, 16),
-              itemCount: FidsService.airports.length,
+              itemCount: FidsService.airports.length + 1,
               itemBuilder: (context, index) {
+                if (index == FidsService.airports.length) {
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                    child: AdBanner(placementId: AdService.bannerPlacementId),
+                  );
+                }
                 final airport = FidsService.airports[index];
                 final delay = Duration(milliseconds: 80 * index);
                 return _AirportCard(
