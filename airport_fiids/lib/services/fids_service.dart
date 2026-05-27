@@ -27,6 +27,10 @@ class FidsService {
     Airport(id: '301', name: 'آبادان', nameEn: 'Abadan', latitude: 30.3711, longitude: 48.2283, urlPath: '/301/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%D8%A2%D8%A8%D8%A7%D8%AF%D8%A7%D9%86'),
     Airport(id: '202', name: 'گرگان', nameEn: 'Gorgan', latitude: 36.9094, longitude: 54.4019, urlPath: '/202/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%DA%AF%D8%B1%DA%AF%D8%A7%D9%86'),
     Airport(id: '112', name: 'همدان', nameEn: 'Hamedan', latitude: 34.8692, longitude: 48.5525, urlPath: '/112/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%D9%87%D9%85%D8%AF%D8%A7%D9%86'),
+    Airport(id: '113', name: 'اردبیل', nameEn: 'Ardabil', latitude: 38.3257, longitude: 48.4244, urlPath: '/113/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%D8%A7%D8%B1%D8%AF%D8%A8%D9%8A%D9%84'),
+    Airport(id: '105', name: 'ایلام', nameEn: 'Ilam', latitude: 33.5866, longitude: 46.4048, urlPath: '/105/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%D8%A7%D9%8A%D9%84%D8%A7%D9%85'),
+    Airport(id: '204', name: 'بیرجند', nameEn: 'Birjand', latitude: 32.8981, longitude: 59.2661, urlPath: '/204/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%D8%A8%D9%8A%D8%B1%D8%AC%D9%86%D8%AF'),
+    Airport(id: '402', name: 'سنندج', nameEn: 'Sanandaj', latitude: 35.2458, longitude: 47.0092, urlPath: '/402/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%D8%B3%D9%86%D9%86%D8%AF%D8%AC'),
   ];
 
   Future<Map<String, List<Flight>>> fetchFlights(Airport airport) async {
