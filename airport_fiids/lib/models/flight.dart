@@ -8,6 +8,7 @@ class Flight {
   final String register;
   final String aircraft;
   final String date;
+  final String? airlineLogoUrl;
 
   Flight({
     required this.dayTime,
@@ -19,5 +20,6 @@ class Flight {
     required this.register,
     required this.aircraft,
     required this.date,
+    this.airlineLogoUrl,
   });
 }
