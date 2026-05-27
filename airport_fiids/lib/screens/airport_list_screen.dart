@@ -70,6 +70,24 @@ class AirportListScreen extends StatelessWidget {
                 ),
                 title: Text(airport.name, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
                 subtitle: Text(airport.nameEn, style: TextStyle(fontSize: 11, color: Colors.grey.shade500)),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.directions, color: theme.colorScheme.primary, size: 22),
+                      tooltip: t.tr('navigateToAirport'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => AirportMapScreen(airport: airport),
+                          ),
+                        );
+                      },
+                    ),
+                    Icon(Icons.chevron_left, color: Colors.grey.shade400),
+                  ],
+                ),
                 onTap: () {
                   Navigator.push(
                     context,
