@@ -46,6 +46,57 @@ class FidsService {
   ];
 
   Future<Map<String, List<Flight>>> fetchFlights(Airport airport) async {
-    return {'arrivals': [], 'departures': []};
+    final client = http.Client();
+    try {
+      final uri = Uri.parse('$baseUrl${airport.urlPath}');
+      final response = await client
+          .get(uri, headers: {
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'fa-IR,fa;q=0.9,en;q=0.8',
+          })
+          .timeout(const Duration(seconds: 15));
+
+      if (response.statusCode != 200) {
+        throw Exception('خطا در دریافت اطلاعات (کد ${response.statusCode})');
+      }
+
+      final body = utf8.decode(response.bodyBytes);
+      final document = html_parser.parse(body);
+
+      final arrivals = _parseFlights(document.getElementById('input'));
+      final departures = _parseFlights(document.getElementById('output'));
+
+      return {'arrivals': arrivals, 'departures': departures};
+    } finally {
+      client.close();
+    }
+  }
+
+  List<Flight> _parseFlights(dom.Element? tabContent) {
+    final flights = <Flight>[];
+    if (tabContent == null) return flights;
+
+    final table = tabContent.querySelector('table');
+    if (table == null) return flights;
+
+    final rows = table.querySelectorAll('tbody tr');
+    for (final row in rows) {
+      final cells = row.querySelectorAll('td');
+      if (cells.length < 9) continue;
+
+      flights.add(Flight(
+        dayTime: cells[0].text.trim(),
+        airline: cells[1].text.trim(),
+        flightNumber: cells[2].text.trim(),
+        origin: cells[3].text.trim(),
+        status: cells[4].text.trim(),
+        actualTime: cells[6].text.trim(),
+        register: cells[7].text.trim(),
+        aircraft: cells[8].text.trim(),
+        date: cells[9].text.trim(),
+      ));
+    }
+    return flights;
   }
 }
