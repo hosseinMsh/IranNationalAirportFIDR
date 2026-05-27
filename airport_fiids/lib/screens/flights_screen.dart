@@ -199,22 +199,50 @@ class _FlightsScreenState extends State<FlightsScreen>
 
   Widget _buildBody(ThemeData theme) {
     final t = TranslationService.instance;
-    if (_loading) return const Center(child: CircularProgressIndicator());
+    if (_loading) return const _ShimmerLoading();
+
     if (_error != null) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.error_outline, size: 64, color: theme.colorScheme.error),
-            const SizedBox(height: 16),
-            Text(t.tr('errorLoading'), style: theme.textTheme.titleMedium),
-            const SizedBox(height: 8),
-            Text(_error!, style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey)),
-            const SizedBox(height: 16),
+            Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                color: theme.colorScheme.error.withAlpha(15),
+                borderRadius: BorderRadius.circular(40),
+              ),
+              child: Icon(Icons.cloud_off_rounded,
+                  size: 40, color: theme.colorScheme.error),
+            ),
+            const SizedBox(height: 20),
+            Text(t.tr('errorLoading'),
+                style: theme.textTheme.titleMedium
+                    ?.copyWith(fontWeight: FontWeight.w600)),
+            const SizedBox(height: 6),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: Text(
+                _error!,
+                style: theme.textTheme.bodySmall
+                    ?.copyWith(color: Colors.grey.shade500),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const SizedBox(height: 20),
             ElevatedButton.icon(
               onPressed: _loadFlights,
-              icon: const Icon(Icons.refresh),
+              icon: const Icon(Icons.refresh, size: 18),
               label: Text(t.tr('retry')),
+              style: ElevatedButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14)),
+              ),
             ),
           ],
         ),
@@ -328,13 +356,25 @@ class _FlightsScreenState extends State<FlightsScreen>
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.search_off, size: 48, color: Colors.grey.shade400),
-            const SizedBox(height: 8),
+            Container(
+              width: 72,
+              height: 72,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade100,
+                borderRadius: BorderRadius.circular(36),
+              ),
+              child: Icon(Icons.search_off_rounded,
+                  size: 34, color: Colors.grey.shade400),
+            ),
+            const SizedBox(height: 14),
             Text(
               _searchQuery.isNotEmpty || _selectedStatusKeys.isNotEmpty
                   ? t.tr('noFlightsFound')
                   : t.tr('noFlightsAtAll'),
-              style: TextStyle(fontSize: 15, color: Colors.grey.shade500),
+              style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey.shade500,
+                  fontWeight: FontWeight.w500),
             ),
           ],
         ),
@@ -345,9 +385,10 @@ class _FlightsScreenState extends State<FlightsScreen>
       onRefresh: _loadFlights,
       child: ListView.builder(
         controller: controller,
-        padding: const EdgeInsets.only(bottom: 8),
+        padding: const EdgeInsets.only(top: 4, bottom: 12),
         itemCount: flights.length,
-        itemBuilder: (_, i) => FlightCard(flight: flights[i]),
+        itemBuilder: (_, i) =>
+            FlightCard(flight: flights[i], index: i),
       ),
     );
   }
@@ -366,3 +407,71 @@ class _StatusDef {
     required this.color,
   });
 }
+
+class _ShimmerLoading extends StatefulWidget {
+  const _ShimmerLoading();
+
+  @override
+  State<_ShimmerLoading> createState() => _ShimmerLoadingState();
+}
+
+class _ShimmerLoadingState extends State<_ShimmerLoading>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (_, __) {
+        return ShaderMask(
+          shaderCallback: (bounds) {
+            return LinearGradient(
+              begin: Alignment(-1 + _controller.value * 2, 0),
+              end: Alignment(1 + _controller.value * 2, 0),
+              colors: [
+                Colors.grey.shade200,
+                Colors.grey.shade100,
+                Colors.grey.shade200,
+              ],
+              stops: const [0.0, 0.5, 1.0],
+            ).createShader(bounds);
+          },
+          blendMode: BlendMode.srcIn,
+          child: Column(
+            children: List.generate(6, (i) {
+              return Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                child: Container(
+                  height: 110,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
+              );
+            }),
+          ),
+        );
+      },
+    );
+  }
+}
+
+
