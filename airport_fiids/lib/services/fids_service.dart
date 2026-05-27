@@ -8,7 +8,11 @@ import '../models/airport.dart';
 class FidsService {
   static const String baseUrl = 'https://fids.airport.ir';
 
-  static const List<Airport> airports = [];
+  static const List<Airport> airports = [
+    Airport(id: '2', name: 'مهرآباد', nameEn: 'Mehrabad', latitude: 35.6892, longitude: 51.3134, urlPath: '/2/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%D9%85%D9%87%D8%B1%D8%A2%D8%A8%D8%A7%D8%AF'),
+    Airport(id: '102', name: 'مشهد', nameEn: 'Mashhad', latitude: 36.2352, longitude: 59.6439, urlPath: '/102/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%D9%85%D8%B4%D9%87%D8%AF'),
+    Airport(id: '1', name: 'شیراز', nameEn: 'Shiraz', latitude: 29.5392, longitude: 52.5898, urlPath: '/1/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%D8%B4%D9%8A%D8%B1%D8%A7%D8%B2'),
+  ];
 
   Future<Map<String, List<Flight>>> fetchFlights(Airport airport) async {
     return {'arrivals': [], 'departures': []};
