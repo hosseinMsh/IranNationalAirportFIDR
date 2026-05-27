@@ -85,9 +85,13 @@ class FidsService {
       final cells = row.querySelectorAll('td');
       if (cells.length < 9) continue;
 
+      final airlineCell = cells[1];
+      final imgElement = airlineCell.querySelector('img');
+      final airlineLogoUrl = imgElement?.attributes['src'];
+
       flights.add(Flight(
         dayTime: cells[0].text.trim(),
-        airline: cells[1].text.trim(),
+        airline: airlineCell.text.trim(),
         flightNumber: cells[2].text.trim(),
         origin: cells[3].text.trim(),
         status: cells[4].text.trim(),
@@ -95,6 +99,7 @@ class FidsService {
         register: cells[7].text.trim(),
         aircraft: cells[8].text.trim(),
         date: cells[9].text.trim(),
+        airlineLogoUrl: airlineLogoUrl != null ? '$baseUrl$airlineLogoUrl' : null,
       ));
     }
     return flights;
