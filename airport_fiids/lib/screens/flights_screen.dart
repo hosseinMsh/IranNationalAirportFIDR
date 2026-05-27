@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import '../models/flight.dart';
 import '../models/airport.dart';
+import '../services/ad_service.dart';
 import '../services/fids_service.dart';
 import '../services/translations.dart';
+import '../widgets/ad_banner.dart';
 import '../widgets/flight_card.dart';
 
 class FlightsScreen extends StatefulWidget {
@@ -79,6 +81,10 @@ class _FlightsScreenState extends State<FlightsScreen>
       setState(() { _searchQuery = _searchController.text; });
     });
     _loadFlights();
+
+    Future.delayed(const Duration(seconds: 2), () {
+      AdService.showInterstitial();
+    });
   }
 
   void _onLocaleChanged() => setState(() {});
@@ -332,6 +338,7 @@ class _FlightsScreenState extends State<FlightsScreen>
             },
           ),
         ),
+        AdBanner(placementId: AdService.bannerPlacementId),
         Expanded(
           child: TabBarView(
             controller: _tabController,
