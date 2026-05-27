@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'screens/splash_screen.dart';
+import 'services/ad_service.dart';
 import 'services/translations.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  AdService.initialize();
   runApp(const FidsApp());
 }
 
