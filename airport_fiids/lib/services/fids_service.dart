@@ -19,6 +19,10 @@ class FidsService {
     Airport(id: '201', name: 'کرمان', nameEn: 'Kerman', latitude: 30.2744, longitude: 56.9517, urlPath: '/201/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%DA%A9%D8%B1%D9%85%D8%A7%D9%86'),
     Airport(id: '117', name: 'بندرعباس', nameEn: 'Bandar Abbas', latitude: 27.2183, longitude: 56.3778, urlPath: '/117/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%D8%A8%D9%86%D8%AF%D8%B1%D8%B9%D8%A8%D8%A7%D8%B3'),
     Airport(id: '106', name: 'ساری', nameEn: 'Sari', latitude: 36.6283, longitude: 53.1936, urlPath: '/106/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%D8%B3%D8%A7%D8%B1%D9%8A'),
+    Airport(id: '107', name: 'یزد', nameEn: 'Yazd', latitude: 31.9049, longitude: 54.2785, urlPath: '/107/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%D9%8A%D8%B2%D8%AF'),
+    Airport(id: '111', name: 'کرمانشاه', nameEn: 'Kermanshah', latitude: 34.3459, longitude: 47.1581, urlPath: '/111/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%DA%A9%D8%B1%D9%85%D8%A7%D9%86%D8%B4%D8%A7%D9%87'),
+    Airport(id: '110', name: 'ارومیه', nameEn: 'Urmia', latitude: 37.6681, longitude: 45.0687, urlPath: '/110/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%D8%A7%D8%B1%D9%88%D9%85%D9%8A%D9%87'),
+    Airport(id: '203', name: 'رشت', nameEn: 'Rasht', latitude: 37.3253, longitude: 49.6058, urlPath: '/203/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%D8%B1%D8%B4%D8%AA'),
   ];
 
   Future<Map<String, List<Flight>>> fetchFlights(Airport airport) async {
