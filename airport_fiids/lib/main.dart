@@ -42,6 +42,7 @@ class _FidsAppState extends State<FidsApp> {
           seedColor: primaryColor,
           secondary: secondaryColor,
           brightness: Brightness.light,
+          surface: Colors.white,
         ),
         useMaterial3: true,
         appBarTheme: const AppBarTheme(
@@ -52,45 +53,66 @@ class _FidsAppState extends State<FidsApp> {
           foregroundColor: Colors.white,
         ),
         cardTheme: CardThemeData(
-          elevation: 3,
-          shadowColor: Colors.black26,
+          elevation: 0,
+          color: Colors.white,
+          surfaceTintColor: Colors.transparent,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(16),
+            side: BorderSide(color: Colors.grey.shade200, width: 0.5),
           ),
           clipBehavior: Clip.antiAlias,
-          margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 6),
+          margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+          shadowColor: Colors.black.withAlpha(13),
         ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
           fillColor: Colors.grey.shade50,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(14),
+            borderSide: BorderSide(color: Colors.grey.shade200),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(14),
+            borderSide: BorderSide(color: Colors.grey.shade200),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: primaryColor, width: 1.5),
+            borderRadius: BorderRadius.circular(14),
+            borderSide: BorderSide(color: primaryColor.withAlpha(180), width: 1.5),
           ),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         ),
         chipTheme: ChipThemeData(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(22),
           ),
-          side: BorderSide(color: primaryColor.withAlpha(80)),
+          side: BorderSide(color: primaryColor.withAlpha(60)),
         ),
         tabBarTheme: const TabBarThemeData(
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white70,
           indicatorColor: Colors.white,
+          indicatorSize: TabBarIndicatorSize.tab,
         ),
         dividerTheme: DividerThemeData(
           color: Colors.grey.shade200,
           thickness: 1,
+          space: 0,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            elevation: 0,
+            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+            ),
+            backgroundColor: primaryColor,
+            foregroundColor: Colors.white,
+          ),
+        ),
+        navigationBarTheme: NavigationBarThemeData(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          indicatorColor: primaryColor.withAlpha(25),
         ),
       ),
       home: const SplashScreen(),
