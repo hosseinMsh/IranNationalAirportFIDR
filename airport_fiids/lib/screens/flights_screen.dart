@@ -149,13 +149,47 @@ class _FlightsScreenState extends State<FlightsScreen>
         appBar: AppBar(
           title: Text('${widget.airport.name} - ${t.tr('flightInfo')}'),
           centerTitle: true,
-          bottom: TabBar(
-            controller: _tabController,
-            indicatorSize: TabBarIndicatorSize.tab,
-            tabs: [
-              Tab(icon: const Icon(Icons.flight_land), text: t.tr('arrivals')),
-              Tab(icon: const Icon(Icons.flight_takeoff), text: t.tr('departures')),
-            ],
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(48),
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                color: Colors.white.withAlpha(25),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: TabBar(
+                controller: _tabController,
+                indicator: BoxDecoration(
+                  color: Colors.white.withAlpha(40),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                indicatorSize: TabBarIndicatorSize.tab,
+                labelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+                unselectedLabelStyle: const TextStyle(fontSize: 13),
+                tabs: [
+                  Tab(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.flight_land, size: 16),
+                        const SizedBox(width: 6),
+                        Text(t.tr('arrivals')),
+                      ],
+                    ),
+                  ),
+                  Tab(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.flight_takeoff, size: 16),
+                        const SizedBox(width: 6),
+                        Text(t.tr('departures')),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
         body: _buildBody(theme),
