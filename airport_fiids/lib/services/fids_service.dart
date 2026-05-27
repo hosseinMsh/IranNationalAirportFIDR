@@ -31,6 +31,10 @@ class FidsService {
     Airport(id: '105', name: 'ایلام', nameEn: 'Ilam', latitude: 33.5866, longitude: 46.4048, urlPath: '/105/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%D8%A7%D9%8A%D9%84%D8%A7%D9%85'),
     Airport(id: '204', name: 'بیرجند', nameEn: 'Birjand', latitude: 32.8981, longitude: 59.2661, urlPath: '/204/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%D8%A8%D9%8A%D8%B1%D8%AC%D9%86%D8%AF'),
     Airport(id: '402', name: 'سنندج', nameEn: 'Sanandaj', latitude: 35.2458, longitude: 47.0092, urlPath: '/402/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%D8%B3%D9%86%D9%86%D8%AF%D8%AC'),
+    Airport(id: '108', name: 'شهرکرد', nameEn: 'Shahrekord', latitude: 32.2972, longitude: 50.8422, urlPath: '/108/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%D8%B4%D9%87%D8%B1%DA%A9%D8%B1%D8%AF'),
+    Airport(id: '901', name: 'بجنورد', nameEn: 'Bojnord', latitude: 37.4930, longitude: 57.3088, urlPath: '/901/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%D8%A8%D8%AC%D9%86%D9%88%D8%B1%D8%AF'),
+    Airport(id: '501', name: 'لارستان', nameEn: 'Larestan', latitude: 27.6747, longitude: 54.3833, urlPath: '/501/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%D9%84%D8%A7%D8%B1%D8%B3%D8%AA%D8%A7%D9%86'),
+    Airport(id: '302', name: 'خرم‌آباد', nameEn: 'Khorramabad', latitude: 33.4354, longitude: 48.2889, urlPath: '/302/%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA-%D9%BE%D8%B1%D9%88%D8%A7%D8%B2-%D9%81%D8%B1%D9%88%D8%AF%DA%AF%D8%A7%D9%87-%D8%AE%D8%B1%D9%85-%D8%A2%D8%A8%D8%A7%D8%AF'),
   ];
 
   Future<Map<String, List<Flight>>> fetchFlights(Airport airport) async {
