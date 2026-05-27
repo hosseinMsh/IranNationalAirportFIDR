@@ -78,19 +78,36 @@ class FlightCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  flight.airline,
-                                  style: theme.textTheme.titleSmall?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 13.5,
-                                    color: Colors.grey.shade800,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      if (flight.airlineLogoUrl != null)
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 6),
+                                          child: Image.network(
+                                            flight.airlineLogoUrl!,
+                                            width: 20,
+                                            height: 20,
+                                            errorBuilder: (_, __, ___) =>
+                                                const SizedBox(width: 20, height: 20),
+                                          ),
+                                        ),
+                                      Expanded(
+                                        child: Text(
+                                          flight.airline,
+                                          style: theme.textTheme.titleSmall?.copyWith(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 13.5,
+                                            color: Colors.grey.shade800,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
                                 const SizedBox(height: 2),
                                 Row(
                                   children: [
