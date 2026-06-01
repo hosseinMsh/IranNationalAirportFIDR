@@ -1,8 +1,7 @@
 allprojects {
     repositories {
-//        google()
+        google()
         mavenCentral()
-//        maven { url "https://maven.devneeds.ir"}
     }
 }
 
