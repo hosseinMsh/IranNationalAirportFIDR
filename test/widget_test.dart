@@ -13,7 +13,7 @@ void main() {
   testWidgets('FidsApp uses Material 3 theme', (WidgetTester tester) async {
     await tester.pumpWidget(const FidsApp());
     final materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
-    expect(materialApp.useMaterial3, isTrue);
+    expect(materialApp.theme?.useMaterial3, isTrue);
   });
 
   group('Flight model', () {
@@ -80,7 +80,7 @@ void main() {
         nameEn: 'Imam Khomeini International Airport',
         latitude: 35.4167,
         longitude: 51.1522,
-        url: '/home/airportInfo?airportCode=OIII',
+        urlPath: '/home/airportInfo?airportCode=OIII',
       );
       expect(airport.id, 'OIII');
       expect(airport.nameEn, contains('Imam Khomeini'));
