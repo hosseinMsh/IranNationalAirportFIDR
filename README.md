@@ -30,9 +30,9 @@
 
 ## 📸 Screenshots
 
-| Splash | Airports | Flights | Map |
-|--------|----------|---------|-----|
-| <img src="assets/images/welcome.png" width="200"/> | Airport list with cards | Arrivals/Departures tabs | OpenStreetMap with nav buttons |
+| Splash | Airports                                                    | Flights | Map |
+|--------|-------------------------------------------------------------|---------|-----|
+| <img src=".github/screen/images/Splash.png" width="200"/> | <img src=".github/screen/images/Airports.png" width="200"/> | <img src=".github/screen/images/Flights.png" width="200"/> | <img src=".github/screen/images/Map.png" width="200"/> |
 
 ## 🛠️ Tech Stack
 
