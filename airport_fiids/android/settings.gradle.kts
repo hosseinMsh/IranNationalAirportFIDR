@@ -11,6 +11,7 @@ pluginManagement {
     includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
 
     repositories {
+//        maven { url "https://maven.devneeds.ir" }
         google()
         mavenCentral()
         gradlePluginPortal()
