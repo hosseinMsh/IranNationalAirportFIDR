@@ -203,8 +203,8 @@ class _AirportCard extends StatelessWidget {
         final animValue = CurvedAnimation(
           parent: animController,
           curve: Interval(
-            delay.inMilliseconds / 800,
-            (delay.inMilliseconds + 200) / 800,
+            (delay.inMilliseconds / 800).clamp(0.0, 1.0),
+            ((delay.inMilliseconds + 200) / 800).clamp(0.0, 1.0),
             curve: Curves.easeOutCubic,
           ),
         ).value;

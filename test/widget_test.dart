@@ -7,11 +7,13 @@ import 'package:airport_fiids/models/airport.dart';
 void main() {
   testWidgets('FidsApp renders without crashing', (WidgetTester tester) async {
     await tester.pumpWidget(const FidsApp());
+    await tester.pumpAndSettle();
     expect(find.byType(FidsApp), findsOneWidget);
   });
 
   testWidgets('FidsApp uses Material 3 theme', (WidgetTester tester) async {
     await tester.pumpWidget(const FidsApp());
+    await tester.pumpAndSettle();
     final materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
     expect(materialApp.theme?.useMaterial3, isTrue);
   });
