@@ -6,6 +6,7 @@ import '../services/translations.dart';
 import '../services/myket_service.dart';
 import 'flights_screen.dart';
 import 'airport_map_screen.dart';
+import 'live_radar_screen.dart';
 
 class AirportListScreen extends StatefulWidget {
   const AirportListScreen({super.key});
@@ -242,6 +243,16 @@ class _AirportListScreenState extends State<AirportListScreen>
           centerTitle: true,
           actions: [
             IconButton(
+              icon: const Icon(Icons.radar_rounded),
+              tooltip: t.tr('liveRadar'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const LiveRadarScreen()),
+                );
+              },
+            ),
+            IconButton(
               icon: const Icon(Icons.info_outline),
               tooltip: t.tr('aboutApp'),
               onPressed: () => _showAboutSheet(context),
@@ -347,6 +358,19 @@ class _AirportListScreenState extends State<AirportListScreen>
                     : _buildGroupedList(allAirports),
               ),
             ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const LiveRadarScreen()),
+            );
+          },
+          icon: const Icon(Icons.radar_rounded),
+          label: Text(
+            t.tr('liveRadar'),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
       ),

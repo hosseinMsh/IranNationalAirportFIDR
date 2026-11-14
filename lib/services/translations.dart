@@ -315,5 +315,65 @@ class TranslationService extends ChangeNotifier {
       'ar': 'إغلاق',
       'en': 'Close',
     },
+    'liveRadar': {
+      'fa': 'رادار زنده پروازها',
+      'ar': 'رادار الرحلات المباشر',
+      'en': 'Live Flight Radar',
+    },
+    'flightsInIranAirspace': {
+      'fa': 'پرواز در آسمان ایران',
+      'ar': 'رحلة في الأجواء',
+      'en': 'Flights in Airspace',
+    },
+    'searchFlightNumber': {
+      'fa': 'جستجوی شماره پرواز یا کالسه‌این...',
+      'ar': 'بحث عن رقم الرحلة...',
+      'en': 'Search flight number or callsign...',
+    },
+    'flightAltitude': {
+      'fa': 'ارتفاع پرواز',
+      'ar': 'ارتفاع الرحلة',
+      'en': 'Altitude',
+    },
+    'flightSpeed': {
+      'fa': 'سرعت زمینی',
+      'ar': 'السرعة الأرضية',
+      'en': 'Ground Speed',
+    },
+    'flightHeading': {
+      'fa': 'سمت و جهت',
+      'ar': 'الاتجاه',
+      'en': 'Heading',
+    },
+    'climbing': {
+      'fa': 'اوج‌گیری',
+      'ar': 'صعود',
+      'en': 'Climbing',
+    },
+    'descending': {
+      'fa': 'کاهش ارتفاع',
+      'ar': 'هبوط',
+      'en': 'Descending',
+    },
+    'cruising': {
+      'fa': 'افقی / کروز',
+      'ar': 'طيران مستوٍ',
+      'en': 'Cruising',
+    },
+    'onGround': {
+      'fa': 'روی زمین',
+      'ar': 'على الأرض',
+      'en': 'On Ground',
+    },
+    'aircraftModel': {
+      'fa': 'مدل هواپیما',
+      'ar': 'طراز الطائرة',
+      'en': 'Aircraft Type',
+    },
+    'radarDataSource': {
+      'fa': 'منبع رادار: آسمان‌جو (Asemanjoo - ODbL)',
+      'ar': 'مصدر البيانات: أسمانجوي',
+      'en': 'Data Source: Asemanjoo (ODbL)',
+    },
   };
 }
