@@ -44,30 +44,54 @@
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
         </intent>
-        <!-- Balad -->
+        <!-- Myket Market App & Intent Scheme -->
+        <package android:name="ir.mservices.market" />
         <intent>
             <action android:name="android.intent.action.VIEW" />
-            <data android:scheme="balad" />
+            <data android:scheme="myket" />
         </intent>
-        <!-- Neshan -->
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-            <data android:scheme="neshan" />
-        </intent>
-        <!-- Google Maps -->
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-            <data android:scheme="comgooglemaps" />
-        </intent>
-        <!-- Google Maps (geo intent) -->
+
+        <!-- Navigation App Packages for Android 11+ Package Visibility -->
+        <package android:name="org.rajman.neshan.traffic.tehran.navigator" />
+        <package android:name="org.neshan.maps.navigation" />
+        <package android:name="org.neshan.nafa" />
+        <package android:name="ir.balad" />
+        <package android:name="ir.balad.maps" />
+        <package android:name="com.google.android.apps.maps" />
+        <package android:name="com.waze" />
+
+        <!-- Navigation & Map URI Schemes -->
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="geo" />
         </intent>
-        <!-- Waze -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="google.navigation" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="nshn" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="neshan" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="balad" />
+        </intent>
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="waze" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.DIAL" />
+            <data android:scheme="tel" />
         </intent>
     </queries>
 </manifest>

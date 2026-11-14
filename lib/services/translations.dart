@@ -13,23 +13,52 @@ class TranslationService extends ChangeNotifier {
     notifyListeners();
   }
 
-  String tr(String key) => _map[key]?[_langCode] ?? key;
+  String tr(String key) => _map[key]?[_langCode] ?? _map[key]?['fa'] ?? key;
 
   static final TranslationService instance = TranslationService._();
 
   TranslationService._();
-  
 
   static const Map<String, Map<String, String>> _map = {
     'appTitle': {
-      'fa': 'FIDS ایران',
-      'ar': 'FIDS إيران',
-      'en': 'Iran FIDS',
+      'fa': 'اطلاعات پرواز فرودگاه‌ها',
+      'ar': 'معلومات رحلات المطارات',
+      'en': 'Iran Airports FIDS',
     },
     'airportsTitle': {
       'fa': 'فرودگاه‌های کشور',
       'ar': 'مطارات البلاد',
       'en': 'Airports',
+    },
+    'searchAirports': {
+      'fa': 'جستجوی نام فرودگاه، شهر یا کد یاتا...',
+      'ar': 'ابحث عن مطار، مدينة أو كود إياتا...',
+      'en': 'Search airport, city or IATA code...',
+    },
+    'pinnedAirports': {
+      'fa': 'فرودگاه‌های برگزیده',
+      'ar': 'المطارات المفضلة',
+      'en': 'Pinned Airports',
+    },
+    'allAirports': {
+      'fa': 'همه فرودگاه‌ها',
+      'ar': 'جميع المطارات',
+      'en': 'All Airports',
+    },
+    'noAirportsFound': {
+      'fa': 'فرودگاهی با این نام یافت نشد',
+      'ar': 'لم يتم العثور على مطار',
+      'en': 'No matching airports found',
+    },
+    'pinAirport': {
+      'fa': 'افزودن به برگزیده‌ها',
+      'ar': 'إضافة إلى المفضلة',
+      'en': 'Pin to favorites',
+    },
+    'unpinAirport': {
+      'fa': 'حذف از برگزیده‌ها',
+      'ar': 'إزالة من المفضلة',
+      'en': 'Unpin from favorites',
     },
     'flightInfo': {
       'fa': 'اطلاعات پرواز',
@@ -47,9 +76,9 @@ class TranslationService extends ChangeNotifier {
       'en': 'Departures',
     },
     'searchHint': {
-      'fa': 'جستجو در شرکت، شماره پرواز یا مبدأ...',
+      'fa': 'جستجو در شرکت، شماره پرواز یا شهر...',
       'ar': 'ابحث عن شركة، رقم رحلة أو وجهة...',
-      'en': 'Search airline, flight or origin...',
+      'en': 'Search airline, flight or city...',
     },
     'errorLoading': {
       'fa': 'خطا در دریافت اطلاعات',
@@ -61,15 +90,25 @@ class TranslationService extends ChangeNotifier {
       'ar': 'إعادة المحاولة',
       'en': 'Retry',
     },
+    'refresh': {
+      'fa': 'تازه‌سازی',
+      'ar': 'تحديث',
+      'en': 'Refresh',
+    },
+    'lastUpdate': {
+      'fa': 'آخرین به‌روزرسانی',
+      'ar': 'آخر تحديث',
+      'en': 'Last updated',
+    },
     'noFlightsFound': {
       'fa': 'پروازی با این مشخصات یافت نشد',
       'ar': 'لم يتم العثور على رحلة',
       'en': 'No flights found',
     },
     'noFlightsAtAll': {
-      'fa': 'هیچ پروازی یافت نشد',
-      'ar': 'لا توجد رحلات',
-      'en': 'No flights available',
+      'fa': 'هیچ پروازی برای امروز ثبت نشده است',
+      'ar': 'لا توجد رحلات مسجلة لليوم',
+      'en': 'No flights scheduled for today',
     },
     'statusLanded': {
       'fa': 'نشست',
@@ -97,19 +136,94 @@ class TranslationService extends ChangeNotifier {
       'en': 'Check-in',
     },
     'statusInProgress': {
-      'fa': 'در حال',
-      'ar': 'قيد التنفيذ',
-      'en': 'In Progress',
+      'fa': 'در حال سوار کردن',
+      'ar': 'قيد الصعود',
+      'en': 'Boarding',
     },
     'statusDeparted': {
       'fa': 'پروازکرد',
       'ar': 'أقلعت',
       'en': 'Departed',
     },
+    'flightDetails': {
+      'fa': 'جزئیات پرواز',
+      'ar': 'تفاصيل الرحلة',
+      'en': 'Flight Details',
+    },
+    'airline': {
+      'fa': 'شرکت هواپیمایی',
+      'ar': 'شركة الطيران',
+      'en': 'Airline',
+    },
+    'flightNumber': {
+      'fa': 'شماره پرواز',
+      'ar': 'رقم الرحلة',
+      'en': 'Flight Number',
+    },
+    'originDestination': {
+      'fa': 'مبدأ / مقصد',
+      'ar': 'المبدأ / الوجهة',
+      'en': 'Origin / Destination',
+    },
+    'scheduledTime': {
+      'fa': 'ساعت برنامه‌ای',
+      'ar': 'الوقت المجدول',
+      'en': 'Scheduled Time',
+    },
+    'actualTime': {
+      'fa': 'ساعت واقعی / تخمینی',
+      'ar': 'الوقت الفعلي',
+      'en': 'Actual / Estimated',
+    },
+    'statusLabel': {
+      'fa': 'وضعیت پرواز',
+      'ar': 'حالة الرحلة',
+      'en': 'Flight Status',
+    },
+    'aircraft': {
+      'fa': 'نوع هواپیما',
+      'ar': 'طراز الطائرة',
+      'en': 'Aircraft',
+    },
+    'register': {
+      'fa': 'علامت ثبت (رجیستر)',
+      'ar': 'علامة التسجيل',
+      'en': 'Registration',
+    },
+    'date': {
+      'fa': 'تاریخ پرواز',
+      'ar': 'تاريخ الرحلة',
+      'en': 'Flight Date',
+    },
+    'shareFlight': {
+      'fa': 'اشتراک‌گذاری اطلاعات پرواز',
+      'ar': 'مشاركة معلومات الرحلة',
+      'en': 'Share Flight Info',
+    },
+    'copyFlightNumber': {
+      'fa': 'کپی شماره پرواز',
+      'ar': 'نسخ رقم الرحلة',
+      'en': 'Copy Flight Number',
+    },
+    'copied': {
+      'fa': 'شماره پرواز در حافظه کپی شد',
+      'ar': 'تم نسخ رقم الرحلة',
+      'en': 'Flight number copied to clipboard',
+    },
     'navigateToAirport': {
       'fa': 'مسیریابی به فرودگاه',
       'ar': 'الاتجاه إلى المطار',
       'en': 'Navigate to Airport',
+    },
+    'callAirport': {
+      'fa': 'تماس با فرودگاه',
+      'ar': 'اتصال بالمطار',
+      'en': 'Call Airport',
+    },
+    'call199': {
+      'fa': 'اطلاعات پرواز ۱۹۹',
+      'ar': 'استعلامات الطيران ۱۹۹',
+      'en': 'Flight Info 199',
     },
     'openInBalad': {
       'fa': 'مسیریابی با بلد',
@@ -135,6 +249,71 @@ class TranslationService extends ChangeNotifier {
       'fa': 'باز کردن در ویز',
       'ar': 'فتح في ويز',
       'en': 'Open in Waze',
+    },
+    'installed': {
+      'fa': 'نصب شده',
+      'ar': 'مثبت',
+      'en': 'Installed',
+    },
+    'webVersion': {
+      'fa': 'تحت وب',
+      'ar': 'عبر الويب',
+      'en': 'Web version',
+    },
+    'aboutApp': {
+      'fa': 'درباره برنامه',
+      'ar': 'عن التطبيق',
+      'en': 'About App',
+    },
+    'disclaimer': {
+      'fa': 'سلب مسئولیت',
+      'ar': 'إخلاء المسؤولية',
+      'en': 'Disclaimer',
+    },
+    'disclaimerText': {
+      'fa': 'این اپلیکیشن کاملاً مستقل بوده و اطلاعات تابلوهای پرواز را به‌صورت برخط و مستقیم از درگاه رسمی شرکت فرودگاه‌ها و ناوبری هوایی ایران (fids.airport.ir) دریافت و نمایش می‌دهد.',
+      'ar': 'هذا التطبيق مستقل ويعرض بيانات الرحلات مباشرة من البوابة الرسمية لمطارات إيران.',
+      'en': 'This is an independent application displaying live flight information directly from Iran Airports Company (fids.airport.ir).',
+    },
+    'rateInMyket': {
+      'fa': 'ثبت نظر و امتیاز در مایکت',
+      'ar': 'تقييم التطبيق في مايكت',
+      'en': 'Rate on Myket',
+    },
+    'checkUpdate': {
+      'fa': 'بررسی به‌روزرسانی',
+      'ar': 'التحقق من التحديث',
+      'en': 'Check for Updates',
+    },
+    'shareApp': {
+      'fa': 'اشتراک‌گذاری برنامه',
+      'ar': 'مشاركة التطبيق',
+      'en': 'Share App',
+    },
+    'version': {
+      'fa': 'نسخه',
+      'ar': 'الإصدار',
+      'en': 'Version',
+    },
+    'enterApp': {
+      'fa': 'ورود به برنامه',
+      'ar': 'الدخول إلى التطبيق',
+      'en': 'Enter App',
+    },
+    'iranAirports': {
+      'fa': 'فرودگاه‌های ایران',
+      'ar': 'مطارات إيران',
+      'en': 'Airports of Iran',
+    },
+    'pressBackAgainToExit': {
+      'fa': 'برای خروج، دوباره دکمه بازگشت را بزنید',
+      'ar': 'اضغط مرة أخرى للخروج',
+      'en': 'Press back again to exit',
+    },
+    'close': {
+      'fa': 'بستن',
+      'ar': 'إغلاق',
+      'en': 'Close',
     },
   };
 }

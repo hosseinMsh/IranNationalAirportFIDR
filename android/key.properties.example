@@ -1,0 +1,10 @@
+# Sample key.properties file for release signing.
+# Copy this file to android/key.properties and replace with your keystore credentials.
+#
+# Generate a keystore with:
+# keytool -genkey -v -keystore release-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias myket-key
+#
+keyAlias=myket-key
+keyPassword=YOUR_KEY_PASSWORD
+storeFile=release-keystore.jks
+storePassword=YOUR_STORE_PASSWORD

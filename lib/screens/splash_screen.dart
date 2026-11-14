@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import '../services/translations.dart';
 import 'airport_list_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,13 +16,14 @@ class _SplashScreenState extends State<SplashScreen>
   late Animation<double> _fadeIn;
   late Animation<double> _logoScale;
   late Animation<Offset> _slideUp;
+  bool _navigated = false;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 2200),
+      duration: const Duration(milliseconds: 1600),
     );
 
     _fadeIn = CurvedAnimation(
@@ -33,27 +35,29 @@ class _SplashScreenState extends State<SplashScreen>
       curve: const Interval(0.0, 0.6, curve: Curves.elasticOut),
     );
     _slideUp = Tween<Offset>(
-      begin: const Offset(0, 0.3),
+      begin: const Offset(0, 0.25),
       end: Offset.zero,
     ).animate(CurvedAnimation(
       parent: _controller,
-      curve: const Interval(0.3, 0.7, curve: Curves.easeOutCubic),
+      curve: const Interval(0.2, 0.7, curve: Curves.easeOutCubic),
     ));
 
     _controller.forward();
 
-    Future.delayed(const Duration(milliseconds: 2600), () {
-      if (mounted) _navigateToHome();
+    Future.delayed(const Duration(milliseconds: 1900), () {
+      if (mounted && !_navigated) _navigateToHome();
     });
   }
 
   void _navigateToHome() {
+    if (_navigated) return;
+    _navigated = true;
     Navigator.of(context).pushReplacement(
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => const AirportListScreen(),
         transitionsBuilder: (_, a, __, child) =>
             FadeTransition(opacity: a, child: child),
-        transitionDuration: const Duration(milliseconds: 500),
+        transitionDuration: const Duration(milliseconds: 400),
       ),
     );
   }
@@ -66,6 +70,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    final t = TranslationService.instance;
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -78,7 +83,7 @@ class _SplashScreenState extends State<SplashScreen>
                 end: Alignment.bottomCenter,
                 colors: [
                   Colors.transparent,
-                  Colors.black.withAlpha(160),
+                  Colors.black.withAlpha(150),
                 ],
               ),
             ),
@@ -88,51 +93,51 @@ class _SplashScreenState extends State<SplashScreen>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Spacer(flex: 2),
+                const Spacer(flex: 3),
                 ScaleTransition(
                   scale: _logoScale,
                   child: Container(
-                    width: 130,
-                    height: 130,
+                    width: 120,
+                    height: 120,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.white.withAlpha(60),
+                          color: Colors.white.withAlpha(50),
                           blurRadius: 30,
-                          spreadRadius: 5,
+                          spreadRadius: 4,
                         ),
                       ],
                     ),
                     child: Image.asset(
                       'assets/images/logo.png',
-                      width: 120,
-                      height: 120,
+                      width: 110,
+                      height: 110,
                     ),
                   ),
                 ),
-                const SizedBox(height: 28),
+                const SizedBox(height: 24),
                 SlideTransition(
                   position: _slideUp,
                   child: Column(
                     children: [
-                      const Text(
-                        'اطلاعات پرواز',
-                        style: TextStyle(
-                          fontSize: 34,
+                      Text(
+                        t.tr('flightInfo'),
+                        style: const TextStyle(
+                          fontSize: 30,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
-                          letterSpacing: 1.5,
+                          letterSpacing: 1.2,
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 8),
                       Text(
-                        'فرودگاه‌های ایران',
+                        t.tr('iranAirports'),
                         style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.white.withAlpha(200),
-                          fontWeight: FontWeight.w300,
-                          letterSpacing: 3,
+                          fontSize: 16,
+                          color: Colors.white.withAlpha(210),
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 2,
                         ),
                       ),
                     ],
@@ -142,8 +147,22 @@ class _SplashScreenState extends State<SplashScreen>
                 SlideTransition(
                   position: _slideUp,
                   child: Padding(
-                    padding: const EdgeInsets.only(bottom: 60),
-                    child: _ShimmerButton(onPressed: _navigateToHome),
+                    padding: const EdgeInsets.only(bottom: 24),
+                    child: _ShimmerButton(
+                      label: t.tr('enterApp'),
+                      onPressed: _navigateToHome,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: Text(
+                    '${t.tr('version')} 1.1.0',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white.withAlpha(140),
+                      letterSpacing: 1,
+                    ),
                   ),
                 ),
               ],
@@ -196,9 +215,10 @@ class _AnimatedGradientBackground extends StatelessWidget {
 }
 
 class _ShimmerButton extends StatefulWidget {
+  final String label;
   final VoidCallback onPressed;
 
-  const _ShimmerButton({required this.onPressed});
+  const _ShimmerButton({required this.label, required this.onPressed});
 
   @override
   State<_ShimmerButton> createState() => _ShimmerButtonState();
@@ -252,22 +272,20 @@ class _ShimmerButtonState extends State<_ShimmerButton>
       child: ElevatedButton(
         onPressed: widget.onPressed,
         style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(horizontal: 56, vertical: 18),
+          padding: const EdgeInsets.symmetric(horizontal: 52, vertical: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
-          backgroundColor: Colors.white.withAlpha(50),
+          backgroundColor: Colors.white.withAlpha(45),
           foregroundColor: Colors.white,
           elevation: 0,
-          side: BorderSide(color: Colors.white.withAlpha(120), width: 1.5),
+          side: BorderSide(color: Colors.white.withAlpha(130), width: 1.5),
         ),
-        child: const Text(
-          'ورود به برنامه',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+        child: Text(
+          widget.label,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
     );
   }
 }
-
-

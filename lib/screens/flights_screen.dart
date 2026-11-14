@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../models/flight.dart';
 import '../models/airport.dart';
-import '../services/ad_service.dart';
 import '../services/fids_service.dart';
 import '../services/translations.dart';
-import '../widgets/ad_banner.dart';
 import '../widgets/flight_card.dart';
 
 class FlightsScreen extends StatefulWidget {
@@ -21,13 +20,14 @@ class _FlightsScreenState extends State<FlightsScreen>
   Map<String, List<Flight>>? _flights;
   bool _loading = true;
   String? _error;
+  DateTime? _lastUpdateTime;
   final ScrollController _arrivalsScrollController = ScrollController();
   final ScrollController _departuresScrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
 
   static const List<_StatusDef> _statusDefs = [
-    _StatusDef(key: 'Landed', persianMatch: 'نشست', icon: Icons.touch_app, color: Color(0xFF2E7D32)),
+    _StatusDef(key: 'Landed', persianMatch: 'نشست', icon: Icons.flight_land, color: Color(0xFF2E7D32)),
     _StatusDef(key: 'Delayed', persianMatch: 'تاخیر', icon: Icons.schedule, color: Color(0xFFC62828)),
     _StatusDef(key: 'Cancelled', persianMatch: 'لغو', icon: Icons.cancel, color: Color(0xFF424242)),
     _StatusDef(key: 'OnSchedule', persianMatch: 'طبق برنامه', icon: Icons.check_circle, color: Color(0xFF1565C0)),
@@ -78,25 +78,32 @@ class _FlightsScreenState extends State<FlightsScreen>
       }
     });
     _searchController.addListener(() {
-      setState(() { _searchQuery = _searchController.text; });
+      setState(() { _searchQuery = _searchController.text.trim(); });
     });
-    _loadFlights();
-
-    Future.delayed(const Duration(seconds: 2), () {
-      AdService.showInterstitial();
-    });
+    _loadFlights(forceRefresh: false);
   }
 
   void _onLocaleChanged() => setState(() {});
 
-  Future<void> _loadFlights() async {
+  Future<void> _loadFlights({bool forceRefresh = false}) async {
     setState(() { _loading = true; _error = null; });
     try {
-      final flights = await FidsService().fetchFlights(widget.airport);
-      if (mounted) setState(() { _flights = flights; _loading = false; });
+      final flights = await FidsService().fetchFlights(widget.airport, forceRefresh: forceRefresh);
+      if (mounted) {
+        setState(() {
+          _flights = flights;
+          _loading = false;
+          _lastUpdateTime = DateTime.now();
+        });
+      }
       _scrollToAfterLastLanded();
     } catch (e) {
-      if (mounted) setState(() { _error = e.toString(); _loading = false; });
+      if (mounted) {
+        setState(() {
+          _error = e.toString();
+          _loading = false;
+        });
+      }
     }
   }
 
@@ -109,7 +116,7 @@ class _FlightsScreenState extends State<FlightsScreen>
 
     int lastLandedIndex = -1;
     for (int i = 0; i < flights.length; i++) {
-      if (flights[i].status.contains('نشست')) {
+      if (flights[i].status.contains('نشست') || flights[i].status.contains('پروازکرد')) {
         lastLandedIndex = i;
       }
     }
@@ -121,7 +128,7 @@ class _FlightsScreenState extends State<FlightsScreen>
         ? _arrivalsScrollController
         : _departuresScrollController;
 
-    const double itemHeight = 130;
+    const double itemHeight = 125;
     final targetOffset = scrollToIndex * itemHeight;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -135,6 +142,206 @@ class _FlightsScreenState extends State<FlightsScreen>
     });
   }
 
+  void _showFlightDetails(Flight flight) {
+    final t = TranslationService.instance;
+    final theme = Theme.of(context);
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) {
+        return Container(
+          padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 40,
+                height: 4,
+                margin: const EdgeInsets.only(bottom: 18),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              Row(
+                children: [
+                  if (flight.airlineLogoUrl != null)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Image.network(
+                        flight.airlineLogoUrl!,
+                        width: 28,
+                        height: 28,
+                        errorBuilder: (_, __, ___) =>
+                            const Icon(Icons.flight, size: 24),
+                      ),
+                    ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          flight.airline.isNotEmpty ? flight.airline : t.tr('airline'),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          '${t.tr('flightNumber')}: ${flight.flightNumber}',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: theme.colorScheme.primary,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primary.withAlpha(15),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      flight.status,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: theme.colorScheme.primary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade50,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.grey.shade200),
+                ),
+                child: Column(
+                  children: [
+                    _detailRow(t.tr('originDestination'), flight.origin),
+                    const Divider(height: 16),
+                    _detailRow(t.tr('scheduledTime'), flight.dayTime),
+                    if (flight.actualTime.isNotEmpty) ...[
+                      const Divider(height: 16),
+                      _detailRow(t.tr('actualTime'), flight.actualTime),
+                    ],
+                    if (flight.aircraft.isNotEmpty) ...[
+                      const Divider(height: 16),
+                      _detailRow(t.tr('aircraft'), flight.aircraft),
+                    ],
+                    if (flight.register.isNotEmpty) ...[
+                      const Divider(height: 16),
+                      _detailRow(t.tr('register'), flight.register),
+                    ],
+                    if (flight.date.isNotEmpty) ...[
+                      const Divider(height: 16),
+                      _detailRow(t.tr('date'), flight.date),
+                    ],
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () {
+                        Clipboard.setData(ClipboardData(text: flight.flightNumber));
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(t.tr('copied')),
+                            behavior: SnackBarBehavior.floating,
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.copy_rounded, size: 18),
+                      label: Text(t.tr('copyFlightNumber')),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        final shareText = '${t.tr('flightInfo')} ${flight.airline}\n'
+                            '${t.tr('flightNumber')}: ${flight.flightNumber}\n'
+                            '${t.tr('originDestination')}: ${flight.origin}\n'
+                            '${t.tr('scheduledTime')}: ${flight.dayTime}\n'
+                            '${t.tr('statusLabel')}: ${flight.status}\n'
+                            'فرودگاه ${widget.airport.name}';
+                        Clipboard.setData(ClipboardData(text: shareText));
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(t.tr('copied')),
+                            behavior: SnackBarBehavior.floating,
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.share_rounded, size: 18),
+                      label: Text(t.tr('shareFlight')),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _detailRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 12.5,
+            color: Colors.grey.shade600,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   void dispose() {
     TranslationService.instance.removeListener(_onLocaleChanged);
@@ -145,61 +352,74 @@ class _FlightsScreenState extends State<FlightsScreen>
     super.dispose();
   }
 
+  String _formatTime(DateTime dt) {
+    final h = dt.hour.toString().padLeft(2, '0');
+    final m = dt.minute.toString().padLeft(2, '0');
+    return '$h:$m';
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final t = TranslationService.instance;
-    return Directionality(
-      textDirection: t.isRtl ? TextDirection.rtl : TextDirection.ltr,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('${widget.airport.name} - ${t.tr('flightInfo')}'),
-          centerTitle: true,
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(48),
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                color: Colors.white.withAlpha(25),
+    final isEn = t.langCode == 'en';
+    final airportTitle = isEn ? widget.airport.nameEn : widget.airport.name;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('$airportTitle - ${t.tr('flightInfo')}'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh_rounded),
+            tooltip: t.tr('refresh'),
+            onPressed: () => _loadFlights(forceRefresh: true),
+          ),
+        ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(48),
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            decoration: BoxDecoration(
+              color: Colors.white.withAlpha(25),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: TabBar(
+              controller: _tabController,
+              indicator: BoxDecoration(
+                color: Colors.white.withAlpha(45),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: TabBar(
-                controller: _tabController,
-                indicator: BoxDecoration(
-                  color: Colors.white.withAlpha(40),
-                  borderRadius: BorderRadius.circular(12),
+              indicatorSize: TabBarIndicatorSize.tab,
+              labelStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
+              unselectedLabelStyle: const TextStyle(fontSize: 13),
+              tabs: [
+                Tab(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.flight_land, size: 16),
+                      const SizedBox(width: 6),
+                      Text(t.tr('arrivals')),
+                    ],
+                  ),
                 ),
-                indicatorSize: TabBarIndicatorSize.tab,
-                labelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
-                unselectedLabelStyle: const TextStyle(fontSize: 13),
-                tabs: [
-                  Tab(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.flight_land, size: 16),
-                        const SizedBox(width: 6),
-                        Text(t.tr('arrivals')),
-                      ],
-                    ),
+                Tab(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.flight_takeoff, size: 16),
+                      const SizedBox(width: 6),
+                      Text(t.tr('departures')),
+                    ],
                   ),
-                  Tab(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.flight_takeoff, size: 16),
-                        const SizedBox(width: 6),
-                        Text(t.tr('departures')),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
-        body: _buildBody(theme),
       ),
+      body: _buildBody(theme),
     );
   }
 
@@ -240,15 +460,9 @@ class _FlightsScreenState extends State<FlightsScreen>
             ),
             const SizedBox(height: 20),
             ElevatedButton.icon(
-              onPressed: _loadFlights,
+              onPressed: () => _loadFlights(forceRefresh: true),
               icon: const Icon(Icons.refresh, size: 18),
               label: Text(t.tr('retry')),
-              style: ElevatedButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14)),
-              ),
             ),
           ],
         ),
@@ -257,15 +471,16 @@ class _FlightsScreenState extends State<FlightsScreen>
 
     return Column(
       children: [
+        // نوار جستجو
         Container(
           margin: const EdgeInsets.fromLTRB(12, 10, 12, 0),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: Colors.grey.shade200, width: 0.5),
+            border: Border.all(color: Colors.grey.shade200, width: 0.6),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withAlpha(8),
+                color: Colors.black.withAlpha(6),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
@@ -295,6 +510,7 @@ class _FlightsScreenState extends State<FlightsScreen>
             ),
           ),
         ),
+        // فیلترهای وضعیت
         SizedBox(
           height: 48,
           child: ListView.separated(
@@ -338,7 +554,27 @@ class _FlightsScreenState extends State<FlightsScreen>
             },
           ),
         ),
-        AdBanner(placementId: AdService.bannerPlacementId),
+        // نمایش زمان آخرین استعلام
+        if (_lastUpdateTime != null)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
+            child: Row(
+              children: [
+                Icon(Icons.access_time_filled,
+                    size: 13, color: Colors.grey.shade500),
+                const SizedBox(width: 5),
+                Text(
+                  '${t.tr('lastUpdate')}: ${_formatTime(_lastUpdateTime!)}',
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: Colors.grey.shade600,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        // لیست پروازها
         Expanded(
           child: TabBarView(
             controller: _tabController,
@@ -379,8 +615,8 @@ class _FlightsScreenState extends State<FlightsScreen>
                   ? t.tr('noFlightsFound')
                   : t.tr('noFlightsAtAll'),
               style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey.shade500,
+                  fontSize: 13.5,
+                  color: Colors.grey.shade600,
                   fontWeight: FontWeight.w500),
             ),
           ],
@@ -389,13 +625,16 @@ class _FlightsScreenState extends State<FlightsScreen>
     }
 
     return RefreshIndicator(
-      onRefresh: _loadFlights,
+      onRefresh: () => _loadFlights(forceRefresh: true),
       child: ListView.builder(
         controller: controller,
-        padding: const EdgeInsets.only(top: 4, bottom: 12),
+        padding: const EdgeInsets.only(top: 4, bottom: 16),
         itemCount: flights.length,
-        itemBuilder: (_, i) =>
-            FlightCard(flight: flights[i], index: i),
+        itemBuilder: (_, i) => FlightCard(
+          flight: flights[i],
+          index: i,
+          onTap: () => _showFlightDetails(flights[i]),
+        ),
       ),
     );
   }
@@ -480,5 +719,3 @@ class _ShimmerLoadingState extends State<_ShimmerLoading>
     );
   }
 }
-
-
